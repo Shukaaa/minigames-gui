@@ -34,15 +34,20 @@ abstract class Game {
 		this.initialize()
 	}
 
-	/* Initialize game-specific settings or states here */
+	/** Initialize game-specific settings or states here */
 	abstract fun initialize()
+
+	/**
+	 * Standardized event receiver for the game.
+	 * This method gets called from the GameInventory when a player interacts with the inventory.
+	 */
 	abstract fun receiveEvent(eventId: String, vararg data: Any)
 
-	/*
-	* Helper function to receive a standardized quit event from the inventory
+	/**
+	* Helper function to receive a standardized quit event from the inventory.
 	* This gets automatically called from the GameInventory when a player clicks the quit button (when implemented)
 	* Override this method to handle quit events in your game logic
-	 */
+	*/
 	fun receiveQuitEvent(quittingPlayer: Player) {
 		SoundUtil.playQuitSound(*this.player.toTypedArray())
 		this.player.forEach { p ->

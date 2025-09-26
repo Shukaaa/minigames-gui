@@ -23,7 +23,7 @@ class ConnectFourInventory : GameInventory(6) {
 				}
 			}
 		}
-		inventory.setItem(quitIndex, createBasicItemStack(Material.CHERRY_SIGN, "Quit", NamedTextColor.RED))
+		this.setQuitItem(quitIndex)
 	}
 
 	override fun onClick(originalEvent: InventoryClickEvent) {

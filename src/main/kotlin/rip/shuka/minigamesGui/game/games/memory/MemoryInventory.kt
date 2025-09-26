@@ -16,7 +16,7 @@ class MemoryInventory : GameInventory(4) {
 		for (i in 0 until rows * 9) {
 			inventory.setItem(i, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
 		}
-		inventory.setItem(quitIndex, createBasicItemStack(Material.CHERRY_SIGN, "Quit", NamedTextColor.RED))
+		this.setQuitItem(quitIndex)
 	}
 
 	override fun onClick(originalEvent: InventoryClickEvent) {

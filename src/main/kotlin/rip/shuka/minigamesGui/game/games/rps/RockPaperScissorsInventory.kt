@@ -17,7 +17,7 @@ class RockPaperScissorsInventory : GameInventory(1) {
 		inventory.setItem(rockIndex, createBasicItemStack(Material.STONE, "Rock", NamedTextColor.GRAY))
 		inventory.setItem(paperIndex, createBasicItemStack(Material.PAPER, "Paper", NamedTextColor.WHITE))
 		inventory.setItem(scissorsIndex, createBasicItemStack(Material.SHEARS, "Scissors", NamedTextColor.AQUA))
-		inventory.setItem(quitIndex, createBasicItemStack(Material.CHERRY_SIGN, "Quit", NamedTextColor.RED))
+		this.setQuitItem(quitIndex)
 		for (i in 0..8) {
 			if (inventory.getItem(i) == null) {
 				inventory.setItem(i, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
