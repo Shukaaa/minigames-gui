@@ -22,10 +22,12 @@ class MemoryInventory : GameInventory(4) {
 	override fun onClick(originalEvent: InventoryClickEvent) {
 		val player = originalEvent.whoClicked as Player
 		val index = originalEvent.rawSlot
+
 		if (index == quitIndex) {
-			game.receiveEvent("quit", player)
+			this.sendQuitEvent(player)
 			return
 		}
+
 		val row = index / 9
 		val col = index % 9
 		if (row in 0..3 && col in 0..3) {
@@ -45,7 +47,7 @@ class MemoryInventory : GameInventory(4) {
 				if (revealed[i][j]) {
 					inventory.setItem(index, createBasicItemStack(board[i][j], board[i][j].name, NamedTextColor.GREEN))
 				} else {
-					inventory.setItem(index, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "Hidden", NamedTextColor.GRAY))
+					inventory.setItem(index, createBasicItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "Hidden", NamedTextColor.GRAY))
 				}
 			}
 		}

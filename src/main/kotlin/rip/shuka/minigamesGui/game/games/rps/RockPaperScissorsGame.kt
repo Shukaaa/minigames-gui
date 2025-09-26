@@ -22,20 +22,6 @@ class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 	}
 
 	override fun receiveEvent(eventId: String, vararg data: Any) {
-		if (eventId == "quit") {
-			val quittingPlayer = data[0] as Player
-			SoundUtil.playQuitSound(*player.toTypedArray())
-			player.forEach { p ->
-				p.player.closeInventory()
-				if (p.player != quittingPlayer) {
-					MessageSender.send("${quittingPlayer.name} has quit the game.", p.player, MessageStatus.FAILURE)
-				} else {
-					MessageSender.send("You have quit the game.", p.player, MessageStatus.NEUTRAL)
-				}
-			}
-			return
-		}
-
 		if (eventId == "choose") {
 			val choosingPlayer = data[0] as Player
 			val choice = data[1] as String

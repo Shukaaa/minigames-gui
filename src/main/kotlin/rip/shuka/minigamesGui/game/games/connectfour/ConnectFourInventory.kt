@@ -4,6 +4,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 import rip.shuka.minigamesGui.game.GameInventory
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createBasicItemStack
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createPlayerHead
@@ -16,7 +17,7 @@ class ConnectFourInventory : GameInventory(6) {
 			for (j in 0 until 9) {
 				val index = i * 9 + j
 				if (j < 7) {
-					inventory.setItem(index, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY))
+					inventory.setItem(index, basicPlaygroundItemStack())
 				} else {
 					inventory.setItem(index, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
 				}
@@ -29,9 +30,7 @@ class ConnectFourInventory : GameInventory(6) {
 		val player = originalEvent.whoClicked as Player
 		val index = originalEvent.rawSlot
 
-		if (index == quitIndex) {
-			game.receiveEvent("quit", player)
-		}
+		if (index == quitIndex) this.sendQuitEvent(player)
 
 		val col = index % 9
 		if (col in 0..6) {
@@ -54,9 +53,13 @@ class ConnectFourInventory : GameInventory(6) {
 				when (c) {
 					'X' -> inventory.setItem(index, createBasicItemStack(Material.RED_STAINED_GLASS_PANE, "X", NamedTextColor.RED))
 					'O' -> inventory.setItem(index, createBasicItemStack(Material.BLUE_STAINED_GLASS_PANE, "O", NamedTextColor.BLUE))
-					else -> inventory.setItem(index, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY))
+					else -> inventory.setItem(index, basicPlaygroundItemStack())
 				}
 			}
 		}
+	}
+
+	private fun basicPlaygroundItemStack(): ItemStack {
+		return createBasicItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY)
 	}
 }

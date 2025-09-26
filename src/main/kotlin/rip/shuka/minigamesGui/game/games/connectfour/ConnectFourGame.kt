@@ -29,19 +29,6 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 	}
 
 	override fun receiveEvent(eventId: String, vararg data: Any) {
-		if (eventId == "quit") {
-			val quittingPlayer = data[0] as Player
-			SoundUtil.playQuitSound(*player.toTypedArray())
-			player.forEach { p ->
-				p.player.closeInventory()
-				if (p.player != quittingPlayer) {
-					MessageSender.send("${quittingPlayer.name} has left the game.", p.player, MessageStatus.FAILURE)
-				} else {
-					MessageSender.send("You have left the game.", p.player, MessageStatus.NEUTRAL)
-				}
-			}
-		}
-
 		if (eventId == "click") {
 			val clickingPlayer = data[0] as Player
 			val col = data[1] as Int

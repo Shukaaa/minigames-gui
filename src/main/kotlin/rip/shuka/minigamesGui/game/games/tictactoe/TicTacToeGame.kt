@@ -30,19 +30,6 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 	}
 
 	override fun receiveEvent(eventId: String, vararg data: Any) {
-		if (eventId == "quit") {
-			val quittingPlayer = data[0] as Player
-			SoundUtil.playQuitSound(*player.toTypedArray())
-			player.forEach { p ->
-				p.player.closeInventory()
-				if (p.player != quittingPlayer) {
-					MessageSender.send("${quittingPlayer.name} has quit the game.", p.player, MessageStatus.FAILURE)
-				} else {
-					MessageSender.send("You have quit the game.", p.player, MessageStatus.NEUTRAL)
-				}
-			}
-		}
-
 		if (eventId == "click") {
 			val clickingPlayer = data[0] as Player
 			val row = data[1] as Int

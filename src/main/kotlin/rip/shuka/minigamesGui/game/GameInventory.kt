@@ -2,6 +2,7 @@ package rip.shuka.minigamesGui.game
 
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit.createInventory
+import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
@@ -27,6 +28,13 @@ abstract class GameInventory : InventoryHolder {
 
 	override fun getInventory(): Inventory {
 		return inventory
+	}
+
+	/*
+	* Helper function to send a standardized quit event to the game instance
+	*/
+	protected fun sendQuitEvent(player: Player) {
+		game.receiveQuitEvent(player)
 	}
 
 	/*
