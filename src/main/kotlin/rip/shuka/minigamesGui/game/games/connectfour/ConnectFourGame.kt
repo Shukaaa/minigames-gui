@@ -5,6 +5,7 @@ import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
 import rip.shuka.minigamesGui.message.MessageStatus
+import rip.shuka.minigamesGui.utils.SoundUtil
 
 class ConnectFourGame : Game({ ConnectFourInventory() }) {
 	override val key: String = "connectfour"
@@ -30,6 +31,7 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 	override fun receiveEvent(eventId: String, vararg data: Any) {
 		if (eventId == "quit") {
 			val quittingPlayer = data[0] as Player
+			SoundUtil.playQuitSound(*player.toTypedArray())
 			player.forEach { p ->
 				p.player.closeInventory()
 				if (p.player != quittingPlayer) {
@@ -46,18 +48,22 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 
 			val teamIndex = player.indexOfFirst { it.player == clickingPlayer } % 2
 			if (teamIndex != currentTurn) {
+				SoundUtil.playErrorSound(clickingPlayer)
 				MessageSender.send("It's not your turn! Wait for your opponent.", clickingPlayer, MessageStatus.FAILURE)
 				return
 			}
 
 			val row = getAvailableRow(col)
 			if (row == -1) {
+				SoundUtil.playErrorSound(clickingPlayer)
 				MessageSender.send("This column is full! Choose another one.", clickingPlayer, MessageStatus.FAILURE)
 				return
 			}
 
 			val symbol = if (currentTurn == 0) 'X' else 'O'
 			board[row][col] = symbol
+
+			SoundUtil.playDefaultSelectSound(*player.toTypedArray())
 
 			player.forEach { p ->
 				val playerSymbol = if (player.indexOf(p) % 2 == 0) 'X' else 'O'
@@ -70,15 +76,19 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 			if (checkWin(row, col, symbol)) {
 				player.forEach { p ->
 					p.player.closeInventory()
+					SoundUtil.playQuitSound(*player.toTypedArray())
 					if (p.player == clickingPlayer) {
+						SoundUtil.playWinningSound(p)
 						MessageSender.send("You win!", p.player, MessageStatus.SUCCESS)
 					} else {
+						SoundUtil.playFailureSound(p)
 						MessageSender.send("You lose!", p.player, MessageStatus.FAILURE)
 					}
 				}
 			} else if (board.all { it.all { cell -> cell != '-' } }) {
 				player.forEach { p ->
 					p.player.closeInventory()
+					SoundUtil.playQuitSound(*player.toTypedArray())
 					MessageSender.send("It's a draw!", p.player, MessageStatus.NEUTRAL)
 				}
 			} else {

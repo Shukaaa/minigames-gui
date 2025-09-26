@@ -5,16 +5,13 @@ import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
 import rip.shuka.minigamesGui.message.MessageStatus
+import rip.shuka.minigamesGui.utils.SoundUtil
 
 class TicTacToeGame : Game({ TicTacToeInventory() }) {
-	override val key: String
-		get() = "tictactoe"
-	override val name: String
-		get() = "Tic Tac Toe"
-	override val title: Component
-		get() = Component.text("Tic Tac Toe")
-	override val description: String
-		get() = "Play a game of Tic Tac Toe against another player. Whoever gets three in a row first wins!"
+	override val key: String = "tictactoe"
+	override val name: String = "Tic Tac Toe"
+	override val title: Component = Component.text("Tic Tac Toe")
+	override val description: String = "Play a game of Tic Tac Toe against another player. Whoever gets three in a row first wins!"
 
 	private val board = arrayOf<CharArray?>(
 		charArrayOf('-', '-', '-'),
@@ -35,6 +32,7 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 	override fun receiveEvent(eventId: String, vararg data: Any) {
 		if (eventId == "quit") {
 			val quittingPlayer = data[0] as Player
+			SoundUtil.playQuitSound(*player.toTypedArray())
 			player.forEach { p ->
 				p.player.closeInventory()
 				if (p.player != quittingPlayer) {
@@ -57,17 +55,20 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 
 			val totalMoves = board.sumOf { it!!.count { cell -> cell != '-' } }
 			if (totalMoves % 2 != currentPlayerIndex) {
+				SoundUtil.playErrorSound(clickingPlayer)
 				MessageSender.send("It's not your turn! Wait for your opponent.", clickingPlayer, MessageStatus.FAILURE)
 				return
 			}
 
 			if (row !in 0..2 || col !in 0..2 || board[row]!![col] != '-') {
+				SoundUtil.playErrorSound(clickingPlayer)
 				MessageSender.send("Invalid move! Try again.", clickingPlayer, MessageStatus.FAILURE)
 				return
 			}
 
 			board[row]!![col] = currentSymbol
 
+			SoundUtil.playDefaultSelectSound(*player.toTypedArray())
 			player.forEach { p ->
 				val isCurrentTurn = player.indexOf(p) == (currentPlayerIndex + 1) % 2
 				val playerSymbol = if (player.indexOf(p) == 0) 'X' else 'O'
@@ -80,14 +81,17 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 				player.forEach { p ->
 					p.player.closeInventory()
 					if (p.player == clickingPlayer) {
+						SoundUtil.playWinningSound(p)
 						MessageSender.send("You win!", p.player, MessageStatus.SUCCESS)
 					} else {
+						SoundUtil.playFailureSound(p)
 						MessageSender.send("You lose! ${clickingPlayer.name} wins!", p.player, MessageStatus.FAILURE)
 					}
 				}
 			} else if (totalMoves + 1 == 9) {
 				player.forEach { p ->
 					p.player.closeInventory()
+					SoundUtil.playQuitSound(p)
 					MessageSender.send("It's a draw!", p.player, MessageStatus.NEUTRAL)
 				}
 			}

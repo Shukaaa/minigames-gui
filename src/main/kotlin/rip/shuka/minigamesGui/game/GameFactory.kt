@@ -1,6 +1,7 @@
 package rip.shuka.minigamesGui.game
 
 import rip.shuka.minigamesGui.game.games.connectfour.ConnectFourGame
+import rip.shuka.minigamesGui.game.games.memory.MemoryGame
 import rip.shuka.minigamesGui.game.games.rps.RockPaperScissorsGame
 import rip.shuka.minigamesGui.game.games.tictactoe.TicTacToeGame
 
@@ -9,7 +10,8 @@ class GameFactory {
 		val games: List<() -> Game> = listOf(
 			{ TicTacToeGame() },
 			{ ConnectFourGame() },
-			{ RockPaperScissorsGame() }
+			{ RockPaperScissorsGame() },
+			{ MemoryGame() }
 		)
 
 		fun getAvailableGames(): List<Game> {
