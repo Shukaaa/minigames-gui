@@ -25,6 +25,7 @@ Players can challenge each other in games like Tic Tac Toe, Connect Four, Rock P
 - Connect Four
 - Rock Paper Scissors
 - Memory
+- Guess Who
 
 ## How to Contribute: Adding New Minigames
 
@@ -79,9 +80,7 @@ Add your game to the GameFactory:
 ```kotlin
 val games: List<() -> Game> = listOf(
     { TicTacToeGame() },
-    { ConnectFourGame() },
-    { RockPaperScissorsGame() },
-    { MemoryGame() },
+    ... // other games
     { MyNewGame() } // <-- Add your game here
 )
 ```
