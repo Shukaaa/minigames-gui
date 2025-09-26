@@ -1,7 +1,6 @@
 package rip.shuka.minigamesGui.game.games.tictactoe
 
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Bukkit.createInventory
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -10,17 +9,19 @@ import rip.shuka.minigamesGui.utils.ItemStacksUtil.createBasicItemStack
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createNamelessItemStack
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createPlayerHead
 
-class TicTacToeInventory : GameInventory() {
+class TicTacToeInventory : GameInventory(3) {
 	private val quitIndex = 12
 
 	override fun initialize() {
-		val rows = 3
-		this.inventory = createInventory(this, 9 * rows, this.title)
-
-		for (i in 0..<rows) {
+		for (i in 0..<this.rows) {
 			for (j in 0..8) {
 				if (j == 5) {
 					inventory.setItem(i * 9 + j, createNamelessItemStack(Material.BLACK_STAINED_GLASS_PANE))
+					continue
+				}
+
+				if (j >= 6) {
+					inventory.setItem(i * 9 + j, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY))
 					continue
 				}
 
@@ -70,7 +71,7 @@ class TicTacToeInventory : GameInventory() {
 						)
 					}
 					else -> {
-						inventory.setItem(index, createNamelessItemStack(Material.GRAY_STAINED_GLASS_PANE))
+						inventory.setItem(index, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY))
 					}
 				}
 			}
