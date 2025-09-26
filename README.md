@@ -26,6 +26,7 @@ Players can challenge each other in games like Tic Tac Toe, Connect Four, Rock P
 - Rock Paper Scissors
 - Memory
 - Guess Who
+- Numbers Game
 
 ## How to Contribute: Adding New Minigames
 
