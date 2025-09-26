@@ -122,16 +122,19 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 
 				if (foundPairs.values.sum() == (size * size) / 2) {
 					val winner = foundPairs.maxByOrNull { it.value }?.key
-					player.forEach { p ->
-						p.player.closeInventory()
-						if (p.player == winner) {
-							SoundUtil.playWinningSound(p)
-							MessageSender.send("You win!", p.player, MessageStatus.SUCCESS)
-						} else {
-							SoundUtil.playFailureSound(p)
-							MessageSender.send("You lose!", p.player, MessageStatus.FAILURE)
-						}
+					val winnerPairsFound = foundPairs[winner] ?: 0
+
+					val looser = foundPairs.minByOrNull { it.value }?.key
+					val looserPairsFound = foundPairs[looser] ?: 0
+
+					if (winnerPairsFound == looserPairsFound) {
+						this.endGameWithDraw("It's a draw! Both players found $winnerPairsFound pairs.")
+						return
 					}
+
+					val winnerMsg = "You win! You found $winnerPairsFound pairs and the opponent found $looserPairsFound pairs."
+					val looserMsg = "You lose! You found $looserPairsFound pairs and the opponent found $winnerPairsFound pairs."
+					this.endGameWithWinner(winner!!, winnerMsg, looserMsg)
 				}
 			}
 		}

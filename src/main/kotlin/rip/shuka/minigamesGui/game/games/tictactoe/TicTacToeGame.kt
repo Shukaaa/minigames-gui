@@ -65,22 +65,9 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 			}
 
 			if (checkWin(currentSymbol)) {
-				player.forEach { p ->
-					p.player.closeInventory()
-					if (p.player == clickingPlayer) {
-						SoundUtil.playWinningSound(p)
-						MessageSender.send("You win!", p.player, MessageStatus.SUCCESS)
-					} else {
-						SoundUtil.playFailureSound(p)
-						MessageSender.send("You lose! ${clickingPlayer.name} wins!", p.player, MessageStatus.FAILURE)
-					}
-				}
+				this.endGameWithWinner(clickingPlayer)
 			} else if (totalMoves + 1 == 9) {
-				player.forEach { p ->
-					p.player.closeInventory()
-					SoundUtil.playQuitSound(p)
-					MessageSender.send("It's a draw!", p.player, MessageStatus.NEUTRAL)
-				}
+				this.endGameWithDraw()
 			}
 		}
 	}

@@ -5,7 +5,6 @@ import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
 import rip.shuka.minigamesGui.message.MessageStatus
-import rip.shuka.minigamesGui.utils.SoundUtil
 
 class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 	override val key = "rockpaperscissors"
@@ -39,21 +38,13 @@ class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 				}
 				when (result) {
 					0 -> {
-						SoundUtil.playQuitSound(*player.toTypedArray())
-						MessageSender.send("It's a draw! Both chose $c1.", p1, MessageStatus.NEUTRAL)
-						MessageSender.send("It's a draw! Both chose $c2.", p2, MessageStatus.NEUTRAL)
+						this.endGameWithDraw("It's a draw! Both chose $c1.")
 					}
 					1 -> {
-						SoundUtil.playWinningSound(player[0])
-						SoundUtil.playFailureSound(player[1])
-						MessageSender.send("You win! $c1 beats $c2.", p1, MessageStatus.SUCCESS)
-						MessageSender.send("You lose! $c1 beats $c2.", p2, MessageStatus.FAILURE)
+						this.endGameWithWinner(p1, "You win! $c1 beats $c2.", "You lose! $c1 beats $c2.")
 					}
 					2 -> {
-						SoundUtil.playWinningSound(player[1])
-						SoundUtil.playFailureSound(player[0])
-						MessageSender.send("You lose! $c2 beats $c1.", p1, MessageStatus.FAILURE)
-						MessageSender.send("You win! $c2 beats $c1.", p2, MessageStatus.SUCCESS)
+						this.endGameWithWinner(p2, "You win! $c2 beats $c1.", "You lose! $c2 beats $c1.")
 					}
 				}
 			} else {

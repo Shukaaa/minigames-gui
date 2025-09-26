@@ -61,23 +61,9 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 			}
 
 			if (checkWin(row, col, symbol)) {
-				player.forEach { p ->
-					p.player.closeInventory()
-					SoundUtil.playQuitSound(*player.toTypedArray())
-					if (p.player == clickingPlayer) {
-						SoundUtil.playWinningSound(p)
-						MessageSender.send("You win!", p.player, MessageStatus.SUCCESS)
-					} else {
-						SoundUtil.playFailureSound(p)
-						MessageSender.send("You lose!", p.player, MessageStatus.FAILURE)
-					}
-				}
+				this.endGameWithWinner(clickingPlayer)
 			} else if (board.all { it.all { cell -> cell != '-' } }) {
-				player.forEach { p ->
-					p.player.closeInventory()
-					SoundUtil.playQuitSound(*player.toTypedArray())
-					MessageSender.send("It's a draw!", p.player, MessageStatus.NEUTRAL)
-				}
+				this.endGameWithDraw()
 			} else {
 				currentTurn = (currentTurn + 1) % 2
 			}

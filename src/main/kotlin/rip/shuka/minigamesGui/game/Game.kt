@@ -59,4 +59,37 @@ abstract class Game {
 			}
 		}
 	}
+
+	/**
+	 * Helper function to end the game with a draw.
+	 * This will close the inventory for all players and send a draw message and play a sound.
+	 * @param drawMessage The message to send to players when the game ends in a draw
+	 */
+	fun endGameWithDraw(drawMessage: String = "It's a draw!") {
+		player.forEach { p ->
+			p.player.closeInventory()
+			SoundUtil.playQuitSound(p)
+			MessageSender.send(drawMessage, p.player, MessageStatus.NEUTRAL)
+		}
+	}
+
+	/**
+	 * Helper function to end the game with a winner.
+	 * This will close the inventory for all players and send a win/lose message and play a sound.
+	 * @param winningPlayer The player who won the game
+	 * @param winMessage The message to send to the winning player
+	 * @param loseMessage The message to send to the losing players
+	 */
+	fun endGameWithWinner(winningPlayer: Player, winMessage: String = "You win!", loseMessage: String = "You lose!") {
+		player.forEach { p ->
+			p.player.closeInventory()
+			if (p.player == winningPlayer) {
+				SoundUtil.playWinningSound(p)
+				MessageSender.send(winMessage, p.player, MessageStatus.SUCCESS)
+			} else {
+				SoundUtil.playFailureSound(p)
+				MessageSender.send(loseMessage, p.player, MessageStatus.FAILURE)
+			}
+		}
+	}
 }
