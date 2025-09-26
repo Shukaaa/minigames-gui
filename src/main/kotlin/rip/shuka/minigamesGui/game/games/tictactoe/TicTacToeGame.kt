@@ -24,8 +24,11 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 
 	override fun initialize() {
 		player.forEach { p ->
+			val isCurrentTurn = player.indexOf(p) == 0
+			val playerSymbol = if (player.indexOf(p) == 0) 'X' else 'O'
+
 			p.player.openInventory(p.inventoryHolder.inventory)
-			(p.inventoryHolder as TicTacToeInventory).initCurrentTurn(player[0].player)
+			(p.inventoryHolder as TicTacToeInventory).initCurrentTurn(player[0].player, playerSymbol, isCurrentTurn)
 		}
 	}
 
@@ -66,8 +69,11 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 			board[row]!![col] = currentSymbol
 
 			player.forEach { p ->
+				val isCurrentTurn = player.indexOf(p) == (currentPlayerIndex + 1) % 2
+				val playerSymbol = if (player.indexOf(p) == 0) 'X' else 'O'
+
 				(p.inventoryHolder as TicTacToeInventory).updateBoard(board)
-				p.inventoryHolder.initCurrentTurn(player[(currentPlayerIndex + 1) % 2].player)
+				p.inventoryHolder.initCurrentTurn(player[(currentPlayerIndex + 1) % 2].player, playerSymbol, isCurrentTurn)
 			}
 
 			if (checkWin(currentSymbol)) {

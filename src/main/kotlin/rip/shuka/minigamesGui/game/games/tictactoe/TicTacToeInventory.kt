@@ -48,8 +48,11 @@ class TicTacToeInventory : GameInventory(3) {
 		}
 	}
 
-	fun initCurrentTurn(currentPlayer: Player) {
-		inventory.setItem(10, createPlayerHead(currentPlayer.name, currentPlayer.name + "'s Turn"))
+	fun initCurrentTurn(currentPlayer: Player, playerSymbol: Char, isCurrentTurn: Boolean) {
+		val color = if (playerSymbol == 'X') NamedTextColor.RED else NamedTextColor.BLUE
+		val status = if (isCurrentTurn) "Your Turn" else "You're Waiting..."
+		val displayName = "${currentPlayer.name} ($playerSymbol, ${if (color == NamedTextColor.RED) "Red" else "Blue"})"
+		inventory.setItem(10, createPlayerHead(currentPlayer.name, "$displayName - $status", color))
 	}
 
 	fun updateBoard(board: Array<CharArray?>) {

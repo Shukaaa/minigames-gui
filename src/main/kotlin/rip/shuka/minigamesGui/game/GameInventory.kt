@@ -21,7 +21,7 @@ abstract class GameInventory : InventoryHolder {
 		this.game = game
 		this.title = title
 
-		this.inventory = createInventory(this, this.rows, this.title)
+		this.inventory = createInventory(this, this.rows * 9, this.title)
 		this.initialize()
 	}
 

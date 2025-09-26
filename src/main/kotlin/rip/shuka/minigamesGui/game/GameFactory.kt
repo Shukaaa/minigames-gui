@@ -1,10 +1,14 @@
 package rip.shuka.minigamesGui.game
 
+import rip.shuka.minigamesGui.game.games.connectfour.ConnectFourGame
 import rip.shuka.minigamesGui.game.games.tictactoe.TicTacToeGame
 
 class GameFactory {
 	companion object {
-		val games: List<() -> Game> = listOf { TicTacToeGame() }
+		val games: List<() -> Game> = listOf (
+			{ TicTacToeGame() },
+			{ ConnectFourGame() }
+		)
 
 		fun getAvailableGames(): List<Game> {
 			return games.map { it() }

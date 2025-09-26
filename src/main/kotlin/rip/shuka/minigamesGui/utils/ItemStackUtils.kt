@@ -21,7 +21,7 @@ object ItemStacksUtil {
 		return stack
 	}
 
-	fun createPlayerHead(playerName: String, displayName: String): ItemStack {
+	fun createPlayerHead(playerName: String, displayName: String, color: NamedTextColor? = null): ItemStack {
 		val skull = ItemStack(Material.PLAYER_HEAD, 1)
 		val meta = skull.itemMeta as SkullMeta?
 
@@ -30,7 +30,7 @@ object ItemStacksUtil {
 			meta.owningPlayer = offlinePlayer
 			meta.displayName(
 				Component.text(displayName)
-					.color(NamedTextColor.WHITE)
+					.color(color ?: NamedTextColor.WHITE)
 					.decoration(TextDecoration.ITALIC, false)
 			)
 			skull.setItemMeta(meta)
