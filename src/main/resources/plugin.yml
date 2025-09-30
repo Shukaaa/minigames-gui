@@ -1,12 +1,12 @@
-name: MinigamesGUI
+name: 1vs1-Minigames-GUI
 version: '1.0'
 main: rip.shuka.minigamesGui.MinigamesGUI
 api-version: '1.21'
 authors: [ Shukaaa ]
 website: shuka.rip
 commands:
-  minigame:
+  1vs1:
     description: Minigames Command
     usage: /<command>
     permission: minigame.command
-    aliases: [ mg ]
+    aliases: [ 1v1 ]

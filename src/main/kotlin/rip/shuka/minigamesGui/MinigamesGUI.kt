@@ -12,8 +12,8 @@ class MinigamesGUI : JavaPlugin() {
 	}
 
 	override fun onEnable() {
-		getCommand("minigame")?.setExecutor(MinigameCommandExecutor())
-		getCommand("minigame")?.tabCompleter = MinigameCommandTabCompleter()
+		getCommand("1vs1")?.setExecutor(MinigameCommandExecutor())
+		getCommand("1vs1")?.tabCompleter = MinigameCommandTabCompleter()
 		server.pluginManager.registerEvents(InventoryListener(), this)
 
 		instance = this

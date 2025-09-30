@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 object MessageSender {
-	private const val PREFIX = "§9§lMINIGAMES §7| "
+	private const val PREFIX = "§9§l1vs1 MINIGAMES §7| "
 
 	fun send(message: String, player: Player, status: MessageStatus = MessageStatus.NEUTRAL) {
 		player.sendMessage(getMessages(message, status))
