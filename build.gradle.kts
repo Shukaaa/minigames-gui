@@ -5,7 +5,8 @@ plugins {
 }
 
 group = "rip.shuka"
-version = "1.0"
+version = providers.gradleProperty("version").getOrElse("1.0")
+val paperMinecraftVersion = providers.gradleProperty("paperMinecraftVersion").getOrElse("1.21.11")
 
 repositories {
 	mavenCentral()
@@ -15,7 +16,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+	compileOnly("io.papermc.paper:paper-api:${paperMinecraftVersion}-R0.1-SNAPSHOT")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
@@ -24,7 +25,13 @@ tasks {
 		// Configure the Minecraft version for our task.
 		// This is the only required configuration besides applying the plugin.
 		// Your plugin's jar (or shadowJar if present) will be used automatically.
-		minecraftVersion("1.21.11")
+		minecraftVersion(paperMinecraftVersion)
+	}
+
+	register("printPaperMinecraftVersion") {
+		doLast {
+			println(paperMinecraftVersion)
+		}
 	}
 }
 

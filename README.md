@@ -13,7 +13,23 @@ Players can challenge each other in games like Tic Tac Toe, Connect Four, Rock P
 
 ## Installation
 
-> Implementing automated releases soon...
+Download the latest plugin JAR from the project's GitHub Releases and place it in
+the server's `plugins` directory. The plugin requires Paper 1.21.11 and Java 21
+or newer.
+
+## Releases
+
+Releases are created automatically from commits pushed to `master` using
+Semantic Release. Manual tag creation is not required.
+
+- `fix: ...` creates a patch release
+- `feat: ...` creates a minor release
+- `feat!: ...` or a commit with `BREAKING CHANGE:` creates a major release
+
+Each release contains the built shadow JAR as a downloadable asset and is
+published to Modrinth for Paper automatically. Configure the repository secret
+`MODRINTH_TOKEN` with the Modrinth `Create versions` scope to enable Modrinth
+publishing.
 
 ## Usage
 
