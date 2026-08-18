@@ -1,6 +1,7 @@
 package rip.shuka.minigamesGui.game.games.connectfour
 
 import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
@@ -12,6 +13,7 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 	override val name: String = "Connect Four"
 	override val title: Component = Component.text("Connect Four")
 	override val description: String = "Play a game of Connect Four against another player. Whoever gets four in a row first wins!"
+	override val icon: Material = Material.GOLD_INGOT
 
 	private val rows = 6
 	private val cols = 7

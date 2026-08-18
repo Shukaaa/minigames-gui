@@ -1,6 +1,7 @@
 package rip.shuka.minigamesGui.game.games.rps
 
 import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
@@ -12,6 +13,7 @@ class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 	override val name = "Rock Paper Scissors"
 	override val title = Component.text("Rock Paper Scissors")
 	override val description = "Choose Rock, Paper or Scissors. The winner is decided after both players have chosen."
+	override val icon = Material.SHEARS
 
 	private val choices = mutableMapOf<Player, String>()
 

@@ -1,6 +1,7 @@
 package rip.shuka.minigamesGui.game.games.numbers
 
 import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
@@ -13,7 +14,8 @@ class NumbersGame : Game({ NumbersInventory() }) {
 	override val title: Component = Component.text("Numbers Game")
 	override val description: String =
 		"Both players pick a number between 1 and 9. The player who picks the higher number wins. " +
-		"But every player can only pick each number once! (USe Voice chat for improved experience)"
+		"But every player can only pick each number once! (Use Voice chat for improved experience)"
+	override val icon: Material = Material.WHITE_CANDLE
 
 	var scores = mutableMapOf<Player, Int>()
 	var choicesSubmitted = mutableMapOf<Player, Int>()

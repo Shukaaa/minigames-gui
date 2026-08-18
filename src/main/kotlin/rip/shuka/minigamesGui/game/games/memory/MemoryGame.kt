@@ -17,6 +17,7 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 	override val name = "Memory"
 	override val title = Component.text("Memory")
 	override val description = "Find all matching pairs. The player with the most pairs wins!"
+	override val icon = Material.CHEST
 
 	private val itemPool = Material.entries.filter { material ->
 		material.isItem && !material.isBlock

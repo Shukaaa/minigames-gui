@@ -7,12 +7,18 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import rip.shuka.minigamesGui.game.GameFactory
 import rip.shuka.minigamesGui.game.GameInventory
+import rip.shuka.minigamesGui.menu.MinigameMenuInventory
 
 class InventoryListener : Listener {
 	private val customInventoryTitles: MutableList<Component?> = GameFactory.getAvailableGames().map { it.title }.toMutableList()
 
 	@EventHandler
 	fun onInventoryDrag(event: InventoryDragEvent) {
+		if (event.inventory.holder is MinigameMenuInventory) {
+			event.isCancelled = true
+			return
+		}
+
 		for (title in customInventoryTitles) {
 			if (event.view.title() == title) {
 				event.isCancelled = true
@@ -23,6 +29,12 @@ class InventoryListener : Listener {
 
 	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
+		if (event.inventory.holder is MinigameMenuInventory) {
+			event.isCancelled = true
+			(event.inventory.holder as MinigameMenuInventory).onClick(event)
+			return
+		}
+
 		for (title in customInventoryTitles) {
 			if (event.view.title() == title) {
 				event.isCancelled = true

@@ -1,6 +1,7 @@
 package rip.shuka.minigamesGui.game.games.tictactoe
 
 import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
@@ -12,6 +13,7 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 	override val name: String = "Tic Tac Toe"
 	override val title: Component = Component.text("Tic Tac Toe")
 	override val description: String = "Play a game of Tic Tac Toe against another player. Whoever gets three in a row first wins!"
+	override val icon: Material = Material.REDSTONE
 
 	private val board = arrayOf<CharArray?>(
 		charArrayOf('-', '-', '-'),

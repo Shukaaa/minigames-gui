@@ -13,7 +13,8 @@ class GuessWhoGame : Game({ GuessWhoInventory() }) {
 	override val key = "guesswho"
 	override val name = "Guess Who"
 	override val title = Component.text("Guess Who")
-	override val description = "Voicechat required! Guess your opponent's item by asking questions. Use the notepad row to mark eliminated items."
+	override val description = "Voicechat required! Guess your opponent's item by asking questions. Use the notepad row to mark eliminated items and select the item you think your opponent has. The first player to guess correctly wins!"
+	override val icon = Material.PLAYER_HEAD
 
 	private val itemPool = Material.entries.filter { material ->
 		material.isItem && !material.isBlock

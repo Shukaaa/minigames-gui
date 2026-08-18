@@ -67,8 +67,8 @@ object ItemStacksUtil {
 		val meta = item.itemMeta
 
 		if (meta != null) {
-			meta.displayName(title)
-			meta.lore(description)
+			meta.displayName(title?.decoration(TextDecoration.ITALIC, false))
+			meta.lore(description?.map { it?.decoration(TextDecoration.ITALIC, false) })
 			item.setItemMeta(meta)
 		}
 

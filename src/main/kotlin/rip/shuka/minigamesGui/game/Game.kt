@@ -1,6 +1,7 @@
 package rip.shuka.minigamesGui.game
 
 import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.message.MessageSender
 import rip.shuka.minigamesGui.message.MessageStatus
@@ -14,6 +15,7 @@ abstract class Game {
 	abstract val name: String
 	abstract val title: Component
 	abstract val description: String
+	abstract val icon: Material
 
 	var player: List<GamePlayer> = ArrayList()
 	var inventoryFactory: (() -> GameInventory)

@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import rip.shuka.minigamesGui.command.MinigameCommandExecutor
 import rip.shuka.minigamesGui.command.MinigameCommandTabCompleter
 import rip.shuka.minigamesGui.listener.InventoryListener
+import rip.shuka.minigamesGui.listener.MinigameSelectionListener
 
 class MinigamesGUI : JavaPlugin() {
 	companion object {
@@ -15,6 +16,7 @@ class MinigamesGUI : JavaPlugin() {
 		getCommand("1vs1")?.setExecutor(MinigameCommandExecutor())
 		getCommand("1vs1")?.tabCompleter = MinigameCommandTabCompleter()
 		server.pluginManager.registerEvents(InventoryListener(), this)
+		server.pluginManager.registerEvents(MinigameSelectionListener(), this)
 
 		instance = this
 	}
