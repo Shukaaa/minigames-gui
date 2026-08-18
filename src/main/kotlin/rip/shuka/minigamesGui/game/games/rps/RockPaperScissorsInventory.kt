@@ -20,7 +20,7 @@ class RockPaperScissorsInventory : GameInventory(1) {
 		this.setQuitItem(quitIndex)
 		for (i in 0..8) {
 			if (inventory.getItem(i) == null) {
-				inventory.setItem(i, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
+				inventory.setItem(i, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
 			}
 		}
 	}

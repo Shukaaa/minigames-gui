@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import rip.shuka.minigamesGui.game.GameInventory
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createBasicItemStack
+import rip.shuka.minigamesGui.utils.ItemStacksUtil.createNamelessItemStack
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createPlayerHead
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.formatMaterialName
 
@@ -15,7 +16,10 @@ class MemoryInventory : GameInventory(4) {
 
 	override fun initialize() {
 		for (i in 0 until rows * 9) {
-			inventory.setItem(i, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
+			inventory.setItem(i, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
+			if (i % 9 == 4) {
+				inventory.setItem(i, createNamelessItemStack(Material.BLACK_STAINED_GLASS_PANE))
+			}
 		}
 		this.setQuitItem(quitIndex)
 	}

@@ -19,7 +19,7 @@ class ConnectFourInventory : GameInventory(6) {
 				if (j < 7) {
 					inventory.setItem(index, basicPlaygroundItemStack())
 				} else {
-					inventory.setItem(index, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
+					inventory.setItem(index, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
 				}
 			}
 		}

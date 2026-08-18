@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: '25'
           cache: gradle
 
       - name: Set up Node.js
@@ -51,7 +51,6 @@ jobs:
 
           echo "released=true" >> "$GITHUB_OUTPUT"
           echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
-          echo "game-version=$(bash gradlew -q printPaperMinecraftVersion | tail -n 1)" >> "$GITHUB_OUTPUT"
           artifact="build/libs/minigames-gui-${tag#v}-all.jar"
           if [ ! -f "$artifact" ]; then
             echo "Release artifact not found: $artifact" >&2
@@ -68,7 +67,10 @@ jobs:
           project: UeukxLtE
           version: ${{ steps.release.outputs.version }}
           loaders: paper
-          game-versions: ${{ steps.release.outputs.game-version }}
+          game-versions: |
+            1.21.x
+            26.1.x
+            26.2.x
           files: ${{ steps.release.outputs.artifact }}
           primary-file: ${{ steps.release.outputs.artifact-name }}
           channel: release
