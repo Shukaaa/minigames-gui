@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import rip.shuka.minigamesGui.game.GameInventory
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createBasicItemStack
+import rip.shuka.minigamesGui.utils.ItemStacksUtil.formatMaterialName
 import rip.shuka.minigamesGui.utils.SoundUtil
 
 class GuessWhoInventory : GameInventory(6) {
@@ -35,11 +36,11 @@ class GuessWhoInventory : GameInventory(6) {
 		for (row in 0 until 3) {
 			for (col in 0 until 7) {
 				val itemIndex = col + (9 * row * 2)
-				val titleCaseName = board[row][col].name.lowercase().replace("_", " ").split(" ").joinToString(" ") { it.replaceFirstChar { char -> char.uppercase() } }
+				val titleCaseName = formatMaterialName(board[row][col])
 				inventory.setItem(itemIndex, createBasicItemStack(board[row][col], "$titleCaseName (Left Click: Submit)", NamedTextColor.GRAY))
 
 				val itemCheckboxIndex = col + (9 * row * 2) + 9
-				inventory.setItem(itemCheckboxIndex, createBasicItemStack(Material.LIME_STAINED_GLASS_PANE, "✓ ${board[row][col].name}", NamedTextColor.GREEN))
+				inventory.setItem(itemCheckboxIndex, createBasicItemStack(Material.LIME_STAINED_GLASS_PANE, "✓ $titleCaseName", NamedTextColor.GREEN))
 			}
 		}
 
@@ -59,7 +60,9 @@ class GuessWhoInventory : GameInventory(6) {
 		val index = originalEvent.rawSlot
 
 		when (index) {
-			quitIndex -> sendQuitEvent(player)
+			quitIndex -> {
+				if (handleQuitClick(originalEvent, quitIndex)) return
+			}
 			nextIndex -> game.receiveEvent("next", player)
 		}
 
@@ -82,7 +85,8 @@ class GuessWhoInventory : GameInventory(6) {
 				SoundUtil.playDefaultSelectSound(player)
 				itemNoteboxStates[row][col] = !itemNoteboxStates[row][col]
 				val material = if (itemNoteboxStates[row][col]) Material.LIME_STAINED_GLASS_PANE else Material.RED_STAINED_GLASS_PANE
-				val status = if (itemNoteboxStates[row][col]) "✓ ${board[row][col].name}" else "✗ ${board[row][col].name}"
+				val itemName = formatMaterialName(board[row][col])
+				val status = if (itemNoteboxStates[row][col]) "✓ $itemName" else "✗ $itemName"
 				inventory.setItem(index, createBasicItemStack(material, status, if (itemNoteboxStates[row][col]) NamedTextColor.GREEN else NamedTextColor.RED))
 			}
 		}

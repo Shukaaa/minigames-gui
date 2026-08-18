@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import rip.shuka.minigamesGui.game.GameInventory
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createBasicItemStack
 import rip.shuka.minigamesGui.utils.ItemStacksUtil.createPlayerHead
+import rip.shuka.minigamesGui.utils.ItemStacksUtil.formatMaterialName
 
 class MemoryInventory : GameInventory(4) {
 	private val quitIndex = 35
@@ -23,10 +24,7 @@ class MemoryInventory : GameInventory(4) {
 		val player = originalEvent.whoClicked as Player
 		val index = originalEvent.rawSlot
 
-		if (index == quitIndex) {
-			this.sendQuitEvent(player)
-			return
-		}
+		if (handleQuitClick(originalEvent, quitIndex)) return
 
 		val row = index / 9
 		val col = index % 9
@@ -45,7 +43,7 @@ class MemoryInventory : GameInventory(4) {
 			for (j in 0..3) {
 				val index = i * 9 + j
 				if (revealed[i][j]) {
-					inventory.setItem(index, createBasicItemStack(board[i][j], board[i][j].name, NamedTextColor.GREEN))
+					inventory.setItem(index, createBasicItemStack(board[i][j], formatMaterialName(board[i][j]), NamedTextColor.GREEN))
 				} else {
 					inventory.setItem(index, createBasicItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "Hidden", NamedTextColor.GRAY))
 				}

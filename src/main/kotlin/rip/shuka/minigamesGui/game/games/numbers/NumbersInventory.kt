@@ -24,7 +24,7 @@ class NumbersInventory : GameInventory(3) {
 	)
 
 	var alreadySelectedNumbers: MutableList<Int> = mutableListOf()
-	var scores = mutableMapOf<Player, Int>()
+	var scores: Map<Player, Int> = emptyMap()
 
 	override fun initialize() {
 		for (i in 0..8) {
@@ -45,10 +45,7 @@ class NumbersInventory : GameInventory(3) {
 		val player = originalEvent.whoClicked as Player
 		val index = originalEvent.rawSlot
 
-		if (index == quitIndex) {
-			this.sendQuitEvent(player)
-			return
-		}
+		if (handleQuitClick(originalEvent, quitIndex)) return
 
 		if (index in 0..8) {
 			val number = index + 1
@@ -64,13 +61,15 @@ class NumbersInventory : GameInventory(3) {
 		}
 	}
 
-	fun updateScores(scores: MutableMap<Player, Int>) {
+	fun updateScores(player: Player, scores: Map<Player, Int>) {
 		this.scores = scores
+		val ownScore = scores[player] ?: 0
+		val opponentScore = scores.entries.firstOrNull { it.key != player }?.value ?: 0
 		inventory.setItem(
 			scoreBookIndex,
 			ItemStacksUtil.createBasicItemStack(
 				Material.BOOK,
-				"You: ${scores.keys.first().let { scores[it] ?: 0 }}, Opponent: ${scores.keys.last().let { scores[it] ?: 0 }}",
+				"You: $ownScore, Opponent: $opponentScore",
 				NamedTextColor.GOLD
 			)
 		)

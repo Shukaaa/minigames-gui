@@ -20,9 +20,7 @@ class NumbersGame : Game({ NumbersInventory() }) {
 	var alreadySelectedNumbers = mutableMapOf<Player, List<Int>>()
 
 	override fun initialize() {
-		player.forEach { p ->
-			p.player.openInventory(p.inventoryHolder.inventory)
-		}
+		openPlayerInventories()
 		scores[player[0].player] = 0
 		scores[player[1].player] = 0
 	}
@@ -74,9 +72,9 @@ class NumbersGame : Game({ NumbersInventory() }) {
 
 				choicesSubmitted.clear()
 
-				player.forEach { p ->
-					(p.inventoryHolder as NumbersInventory).updateAlreadySelectedNumbers(alreadySelectedNumbers[p.player] ?: emptyList())
-					p.inventoryHolder.updateScores(scores)
+				forEachPlayerInventory<NumbersInventory> { gamePlayer, inventory ->
+					inventory.updateAlreadySelectedNumbers(alreadySelectedNumbers[gamePlayer.player] ?: emptyList())
+					inventory.updateScores(gamePlayer.player, scores)
 				}
 			} else {
 				MessageSender.send("Waiting for your opponent to choose...", choosingPlayer, MessageStatus.NEUTRAL)

@@ -20,12 +20,11 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 	)
 
 	override fun initialize() {
-		player.forEach { p ->
-			val isCurrentTurn = player.indexOf(p) == 0
-			val playerSymbol = if (player.indexOf(p) == 0) 'X' else 'O'
-
-			p.player.openInventory(p.inventoryHolder.inventory)
-			(p.inventoryHolder as TicTacToeInventory).initCurrentTurn(player[0].player, playerSymbol, isCurrentTurn)
+		openPlayerInventories()
+		forEachPlayerInventory<TicTacToeInventory> { gamePlayer, inventory ->
+			val playerIndex = player.indexOf(gamePlayer)
+			val playerSymbol = if (playerIndex == 0) 'X' else 'O'
+			inventory.initCurrentTurn(player[0].player, playerSymbol, playerIndex == 0)
 		}
 	}
 
@@ -55,13 +54,12 @@ class TicTacToeGame : Game({ TicTacToeInventory() }) {
 
 			board[row]!![col] = currentSymbol
 
-			SoundUtil.playDefaultSelectSound(*player.toTypedArray())
-			player.forEach { p ->
-				val isCurrentTurn = player.indexOf(p) == (currentPlayerIndex + 1) % 2
-				val playerSymbol = if (player.indexOf(p) == 0) 'X' else 'O'
-
-				(p.inventoryHolder as TicTacToeInventory).updateBoard(board)
-				p.inventoryHolder.initCurrentTurn(player[(currentPlayerIndex + 1) % 2].player, playerSymbol, isCurrentTurn)
+			SoundUtil.playDefaultSelectSound(*(player.map { it.player }).toTypedArray())
+			forEachPlayerInventory<TicTacToeInventory> { gamePlayer, inventory ->
+				val playerIndex = player.indexOf(gamePlayer)
+				val playerSymbol = if (playerIndex == 0) 'X' else 'O'
+				inventory.updateBoard(board)
+				inventory.initCurrentTurn(player[(currentPlayerIndex + 1) % 2].player, playerSymbol, playerIndex == (currentPlayerIndex + 1) % 2)
 			}
 
 			if (checkWin(currentSymbol)) {

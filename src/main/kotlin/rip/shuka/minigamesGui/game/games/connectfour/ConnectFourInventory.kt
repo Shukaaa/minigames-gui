@@ -30,7 +30,7 @@ class ConnectFourInventory : GameInventory(6) {
 		val player = originalEvent.whoClicked as Player
 		val index = originalEvent.rawSlot
 
-		if (index == quitIndex) this.sendQuitEvent(player)
+		if (handleQuitClick(originalEvent, quitIndex)) return
 
 		val col = index % 9
 		if (col in 0..6) {

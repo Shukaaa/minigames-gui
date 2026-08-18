@@ -33,7 +33,10 @@ class RockPaperScissorsInventory : GameInventory(1) {
 			rockIndex -> game.receiveEvent("choose", player, "Rock")
 			paperIndex -> game.receiveEvent("choose", player, "Paper")
 			scissorsIndex -> game.receiveEvent("choose", player, "Scissors")
-			quitIndex -> this.sendQuitEvent(player)
+			quitIndex -> {
+				handleQuitClick(originalEvent, quitIndex)
+				return
+			}
 		}
 	}
 }

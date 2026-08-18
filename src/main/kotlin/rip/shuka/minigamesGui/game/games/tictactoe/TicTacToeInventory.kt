@@ -36,9 +36,9 @@ class TicTacToeInventory : GameInventory(3) {
 		val player = originalEvent.whoClicked as Player
 		val index = originalEvent.rawSlot
 
-		if (index == quitIndex) this.sendQuitEvent(player)
+		if (handleQuitClick(originalEvent, quitIndex)) return
 
-		if ((index + 1) % 9 === 0 || (index + 1) % 9 >= 7) {
+		if ((index + 1) % 9 == 0 || (index + 1) % 9 >= 7) {
 			val row = index / 9
 			val col = (index % 9) - 6
 
@@ -72,7 +72,7 @@ class TicTacToeInventory : GameInventory(3) {
 						)
 					}
 					else -> {
-						inventory.setItem(index, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY))
+						inventory.setItem(index, createBasicItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "You can place here", NamedTextColor.GRAY))
 					}
 				}
 			}

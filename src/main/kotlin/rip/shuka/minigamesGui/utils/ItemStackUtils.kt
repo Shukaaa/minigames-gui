@@ -9,6 +9,13 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
 
 object ItemStacksUtil {
+	fun formatMaterialName(material: Material): String {
+		return material.name
+			.lowercase()
+			.split('_')
+			.joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
+	}
+
 	fun createNamelessItemStack(material: Material): ItemStack {
 		val stack = ItemStack(material)
 		val meta = stack.itemMeta

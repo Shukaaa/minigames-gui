@@ -19,21 +19,23 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 	private var currentTurn = 0
 
 	override fun initialize() {
-		player.forEach { p ->
-			val playerSymbol = if (player.indexOf(p) % 2 == 0) 'X' else 'O'
-			val isCurrentTurn = player.indexOf(p) % 2 == currentTurn
-
-			p.player.openInventory(p.inventoryHolder.inventory)
-			(p.inventoryHolder as ConnectFourInventory).initCurrentTurn(player[currentTurn].player, playerSymbol, isCurrentTurn)
+		openPlayerInventories()
+		forEachPlayerInventory<ConnectFourInventory> { gamePlayer, inventory ->
+			val playerIndex = player.indexOf(gamePlayer)
+			val playerSymbol = if (playerIndex % 2 == 0) 'X' else 'O'
+			inventory.initCurrentTurn(player[currentTurn].player, playerSymbol, playerIndex % 2 == currentTurn)
 		}
 	}
 
 	override fun receiveEvent(eventId: String, vararg data: Any) {
 		if (eventId == "click") {
 			val clickingPlayer = data[0] as Player
+			val playerIndex = player.indexOfFirst { it.player == clickingPlayer }
+			if (playerIndex == -1) return
+
 			val col = data[1] as Int
 
-			val teamIndex = player.indexOfFirst { it.player == clickingPlayer } % 2
+			val teamIndex = playerIndex % 2
 			if (teamIndex != currentTurn) {
 				SoundUtil.playErrorSound(clickingPlayer)
 				MessageSender.send("It's not your turn! Wait for your opponent.", clickingPlayer, MessageStatus.FAILURE)
@@ -50,14 +52,13 @@ class ConnectFourGame : Game({ ConnectFourInventory() }) {
 			val symbol = if (currentTurn == 0) 'X' else 'O'
 			board[row][col] = symbol
 
-			SoundUtil.playDefaultSelectSound(*player.toTypedArray())
+			SoundUtil.playDefaultSelectSound(*(player.map { it.player }).toTypedArray())
 
-			player.forEach { p ->
-				val playerSymbol = if (player.indexOf(p) % 2 == 0) 'X' else 'O'
-				val isCurrentTurn = player.indexOf(p) % 2 == (currentTurn + 1) % 2
-
-				(p.inventoryHolder as ConnectFourInventory).updateBoard(board)
-				p.inventoryHolder.initCurrentTurn(player[(currentTurn + 1) % 2].player, playerSymbol, isCurrentTurn)
+			forEachPlayerInventory<ConnectFourInventory> { gamePlayer, inventory ->
+				val playerIndex = player.indexOf(gamePlayer)
+				val playerSymbol = if (playerIndex % 2 == 0) 'X' else 'O'
+				inventory.updateBoard(board)
+				inventory.initCurrentTurn(player[(currentTurn + 1) % 2].player, playerSymbol, playerIndex % 2 == (currentTurn + 1) % 2)
 			}
 
 			if (checkWin(row, col, symbol)) {

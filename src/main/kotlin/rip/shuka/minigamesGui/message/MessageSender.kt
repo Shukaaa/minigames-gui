@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 object MessageSender {
-	private const val PREFIX = "§9§l1vs1 MINIGAMES §7| "
+	private const val PREFIX = "§9§l1vs1 §7| "
 
 	fun send(message: String, player: Player, status: MessageStatus = MessageStatus.NEUTRAL) {
 		player.sendMessage(getMessages(message, status))
@@ -20,13 +20,12 @@ object MessageSender {
 		get() = Component.text(PREFIX)
 
 	private fun getMessages(message: String, status: MessageStatus): String {
-		var message = message
-		if (status === MessageStatus.SUCCESS) {
-			message = "§a$message"
+		val message = if (status === MessageStatus.SUCCESS) {
+			"§a$message"
 		} else if (status === MessageStatus.FAILURE) {
-			message = "§c$message"
+			"§c$message"
 		} else {
-			message = "§7$message"
+			"§7$message"
 		}
 
 		return PREFIX + message

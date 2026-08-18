@@ -18,26 +18,9 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 	override val title = Component.text("Memory")
 	override val description = "Find all matching pairs. The player with the most pairs wins!"
 
-	private val itemPool = listOf(
-		Material.DIAMOND,
-		Material.GOLD_INGOT,
-		Material.IRON_INGOT,
-		Material.EMERALD,
-		Material.REDSTONE,
-		Material.LAPIS_LAZULI,
-		Material.COAL,
-		Material.QUARTZ,
-		Material.COPPER_INGOT,
-		Material.NETHERITE_SCRAP,
-		Material.PRISMARINE_SHARD,
-		Material.BLAZE_ROD,
-		Material.GHAST_TEAR,
-		Material.SLIME_BALL,
-		Material.MAGMA_CREAM,
-		Material.SPIDER_EYE,
-		Material.RABBIT_FOOT,
-		Material.FEATHER
-	)
+	private val itemPool = Material.entries.filter { material ->
+		material.isItem && !material.isBlock
+	}
 
 	private val size = 4
 	private val board = Array(size) { Array(size) { Material.AIR } }
@@ -56,9 +39,9 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 				board[i][j] = allItems[idx++]
 			}
 		}
+		openPlayerInventories()
 		player.forEach { p ->
 			foundPairs[p.player] = 0
-			p.player.openInventory(p.inventoryHolder.inventory)
 			(p.inventoryHolder as MemoryInventory).initCurrentTurn(player[turn].player, revealed, board)
 		}
 	}
@@ -81,10 +64,10 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 				return
 			}
 
-			SoundUtil.playDefaultSelectSound(*player.toTypedArray())
+			SoundUtil.playDefaultSelectSound(*(player.map { it.player }).toTypedArray())
 			revealed[row][col] = true
-			player.forEach { p ->
-				(p.inventoryHolder as MemoryInventory).updateBoard(revealed, board)
+			forEachPlayerInventory<MemoryInventory> { _, inventory ->
+				inventory.updateBoard(revealed, board)
 			}
 
 			if (firstPick == null) {
@@ -100,8 +83,8 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 					MessageSender.send("Pair found!", pickingPlayer, MessageStatus.SUCCESS)
 					firstPick = null
 					// Same player picks again
-					player.forEach { p ->
-						(p.inventoryHolder as MemoryInventory).initCurrentTurn(player[turn].player, revealed, board)
+					forEachPlayerInventory<MemoryInventory> { _, inventory ->
+						inventory.initCurrentTurn(player[turn].player, revealed, board)
 					}
 				} else {
 					MessageSender.send("No pair!", pickingPlayer, MessageStatus.FAILURE)
@@ -109,13 +92,13 @@ class MemoryGame() : Game({ MemoryInventory() }) {
 					Bukkit.getScheduler().runTaskLater(MinigamesGUI.instance, Runnable {
 						revealed[r1][c1] = false
 						revealed[row][col] = false
-						player.forEach { p ->
-							(p.inventoryHolder as MemoryInventory).updateBoard(revealed, board)
+						forEachPlayerInventory<MemoryInventory> { _, inventory ->
+							inventory.updateBoard(revealed, board)
 						}
 						firstPick = null
 						turn = (turn + 1) % 2
-						player.forEach { p ->
-							(p.inventoryHolder as MemoryInventory).initCurrentTurn(player[turn].player, revealed, board)
+						forEachPlayerInventory<MemoryInventory> { _, inventory ->
+							inventory.initCurrentTurn(player[turn].player, revealed, board)
 						}
 					}, 40L)
 				}

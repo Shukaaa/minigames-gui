@@ -34,6 +34,26 @@ abstract class Game {
 		this.initialize()
 	}
 
+	/**
+	 * Opens each player's dedicated inventory for this game.
+	 */
+	protected fun openPlayerInventories() {
+		player.forEach { gamePlayer ->
+			gamePlayer.player.openInventory(gamePlayer.inventoryHolder.inventory)
+		}
+	}
+
+	/**
+	 * Applies an operation to every player's inventory with a checked game-specific type.
+	 */
+	protected inline fun <reified T : GameInventory> forEachPlayerInventory(
+		action: (GamePlayer, T) -> Unit
+	) {
+		player.forEach { gamePlayer ->
+			action(gamePlayer, gamePlayer.inventoryHolder as T)
+		}
+	}
+
 	/** Initialize game-specific settings or states here */
 	abstract fun initialize()
 
@@ -49,7 +69,7 @@ abstract class Game {
 	* Override this method to handle quit events in your game logic
 	*/
 	fun receiveQuitEvent(quittingPlayer: Player) {
-		SoundUtil.playQuitSound(*this.player.toTypedArray())
+		SoundUtil.playQuitSound(*(this.player.map { it.player }).toTypedArray())
 		this.player.forEach { p ->
 			p.player.closeInventory()
 			if (p.player != quittingPlayer) {
@@ -68,7 +88,7 @@ abstract class Game {
 	fun endGameWithDraw(drawMessage: String = "It's a draw!") {
 		player.forEach { p ->
 			p.player.closeInventory()
-			SoundUtil.playQuitSound(p)
+			SoundUtil.playQuitSound(p.player)
 			MessageSender.send(drawMessage, p.player, MessageStatus.NEUTRAL)
 		}
 	}
@@ -84,10 +104,10 @@ abstract class Game {
 		player.forEach { p ->
 			p.player.closeInventory()
 			if (p.player == winningPlayer) {
-				SoundUtil.playWinningSound(p)
+				SoundUtil.playWinningSound(p.player)
 				MessageSender.send(winMessage, p.player, MessageStatus.SUCCESS)
 			} else {
-				SoundUtil.playFailureSound(p)
+				SoundUtil.playFailureSound(p.player)
 				MessageSender.send(loseMessage, p.player, MessageStatus.FAILURE)
 			}
 		}

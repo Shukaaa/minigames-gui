@@ -41,6 +41,16 @@ abstract class GameInventory : InventoryHolder {
 	}
 
 	/**
+	 * Handles the shared quit button behavior and reports whether the click was consumed.
+	 */
+	protected fun handleQuitClick(event: InventoryClickEvent, quitIndex: Int): Boolean {
+		if (event.rawSlot != quitIndex) return false
+
+		sendQuitEvent(event.whoClicked as Player)
+		return true
+	}
+
+	/**
 	* Helper function to create a basic quit item stack to keep consistency across games
 	*/
 	protected fun setQuitItem(index: Int) {

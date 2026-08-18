@@ -5,6 +5,7 @@ import org.bukkit.entity.Player
 import rip.shuka.minigamesGui.game.Game
 import rip.shuka.minigamesGui.message.MessageSender
 import rip.shuka.minigamesGui.message.MessageStatus
+import rip.shuka.minigamesGui.utils.SoundUtil
 
 class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 	override val key = "rockpaperscissors"
@@ -15,15 +16,21 @@ class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 	private val choices = mutableMapOf<Player, String>()
 
 	override fun initialize() {
-		player.forEach { p ->
-			p.player.openInventory(p.inventoryHolder.inventory)
-		}
+		openPlayerInventories()
 	}
 
 	override fun receiveEvent(eventId: String, vararg data: Any) {
 		if (eventId == "choose") {
 			val choosingPlayer = data[0] as Player
 			val choice = data[1] as String
+
+			if (player.none { it.player == choosingPlayer }) return
+			if (choices.containsKey(choosingPlayer)) {
+				SoundUtil.playErrorSound(choosingPlayer)
+				MessageSender.send("You have already chosen. Wait for your opponent.", choosingPlayer, MessageStatus.FAILURE)
+				return
+			}
+
 			choices[choosingPlayer] = choice
 
 			if (choices.size == 2) {
@@ -33,9 +40,6 @@ class RockPaperScissorsGame : Game({ RockPaperScissorsInventory() }) {
 				val c2 = choices[p2]!!
 
 				val result = getResult(c1, c2)
-				player.forEach { p ->
-					p.player.closeInventory()
-				}
 				when (result) {
 					0 -> {
 						this.endGameWithDraw("It's a draw! Both chose $c1.")
