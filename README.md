@@ -129,6 +129,21 @@ val games: List<() -> Game> = listOf(
 
 - Paper 1.21.11
 - Java 21 or newer
+- Paper 26.x test servers require Java 25 or newer
+
+## Testing supported Paper versions
+
+Separate Gradle tasks are available for testing the Paper 26.x versions. Each
+task uses its own directory under `run`, so worlds and server files do not overwrite
+each other:
+
+```text
+./gradlew runPaper261
+./gradlew runPaper262
+```
+
+On Windows, use `gradlew.bat` instead of `./gradlew`. The server directories are
+`run/26.1.2` and `run/26.2`. The normal `runServer` task uses `run/1.21.11`.
 
 There are also existing games in the `games` package that you can refer to for examples. <br>
 The `Game` and `GameInventory` classes provide a lot of functions and properties to make development easier and keep consistency across games. Make sure to check them out!

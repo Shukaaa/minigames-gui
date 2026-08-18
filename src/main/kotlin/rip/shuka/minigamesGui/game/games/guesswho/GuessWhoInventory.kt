@@ -22,7 +22,7 @@ class GuessWhoInventory : GameInventory(6) {
 
 	override fun initialize() {
 		for (i in 0 until rows * 9) {
-			inventory.setItem(i, createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
+			inventory.setItem(i, createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
 		}
 		setQuitItem(quitIndex)
 		inventory.setItem(infoIndex, createBasicItemStack(Material.BOOK, "Info: Voicechat required!", NamedTextColor.AQUA))

@@ -33,7 +33,7 @@ class NumbersInventory : GameInventory(3) {
 
 		for (i in 9..26) {
 			if (inventory.getItem(i) == null) {
-				inventory.setItem(i, ItemStacksUtil.createBasicItemStack(Material.BLACK_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
+				inventory.setItem(i, ItemStacksUtil.createBasicItemStack(Material.GRAY_STAINED_GLASS_PANE, "", NamedTextColor.DARK_GRAY))
 			}
 		}
 

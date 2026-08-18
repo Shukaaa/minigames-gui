@@ -30,7 +30,7 @@ class MinigameMenuInventory : InventoryHolder {
 		for (row in 0 until rows) {
 			for (column in 0 until 9) {
 				if (row == 0 || row == rows - 1 || column == 0 || column == 8) {
-					inventory.setItem(row * 9 + column, ItemStacksUtil.createNamelessItemStack(Material.BLACK_STAINED_GLASS_PANE))
+					inventory.setItem(row * 9 + column, ItemStacksUtil.createNamelessItemStack(Material.GRAY_STAINED_GLASS_PANE))
 				}
 			}
 		}
