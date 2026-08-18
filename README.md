@@ -27,7 +27,7 @@ Semantic Release. Manual tag creation is not required.
 - `feat!: ...` or a commit with `BREAKING CHANGE:` creates a major release
 
 Each release contains the built shadow JAR as a downloadable asset and is
-published to Modrinth for Paper automatically. Configure the repository secret
+published to Modrinth for Paper and Purpur automatically. Configure the repository secret
 `MODRINTH_TOKEN` with the Modrinth `Create versions` scope to enable Modrinth
 publishing.
 
@@ -144,6 +144,15 @@ each other:
 
 On Windows, use `gradlew.bat` instead of `./gradlew`. The server directories are
 `run/26.1.2` and `run/26.2`. The normal `runServer` task uses `run/1.21.11`.
+
+To test the plugin on Purpur 26.2, run:
+
+```text
+gradlew.bat runPurpur262
+```
+
+The Purpur server JAR is downloaded automatically on the first run and the
+server uses the separate `run/purpur-26.2` directory.
 
 There are also existing games in the `games` package that you can refer to for examples. <br>
 The `Game` and `GameInventory` classes provide a lot of functions and properties to make development easier and keep consistency across games. Make sure to check them out!

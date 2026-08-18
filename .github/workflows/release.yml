@@ -66,7 +66,9 @@ jobs:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: UeukxLtE
           version: ${{ steps.release.outputs.version }}
-          loaders: paper
+          loaders: |-
+            paper
+            purpur
           game-versions: |
             1.21.x
             26.1.x

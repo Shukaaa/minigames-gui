@@ -11,6 +11,8 @@ plugins {
 group = "rip.shuka"
 version = providers.gradleProperty("version").getOrElse("1.0")
 val paperMinecraftVersion = providers.gradleProperty("paperMinecraftVersion").getOrElse("1.21.11")
+val purpurMinecraftVersion = "26.2"
+val purpur262Jar = layout.buildDirectory.file("servers/purpur-$purpurMinecraftVersion.jar")
 
 repositories {
 	mavenCentral()
@@ -53,6 +55,32 @@ tasks {
 
 	registerPaperTest("runPaper261", "26.1.2")
 	registerPaperTest("runPaper262", "26.2")
+
+	val downloadPurpur262 = register("downloadPurpur262") {
+		group = "purpur"
+		description = "Downloads the latest Purpur $purpurMinecraftVersion server."
+		outputs.file(purpur262Jar)
+		doLast {
+			val target = purpur262Jar.get().asFile
+			target.parentFile.mkdirs()
+			uri("https://api.purpurmc.org/v2/purpur/$purpurMinecraftVersion/latest/download")
+				.toURL()
+				.openStream()
+				.use { input ->
+					target.outputStream().use { output -> input.copyTo(output) }
+				}
+		}
+	}
+
+	register<RunServer>("runPurpur262") {
+		group = "purpur"
+		description = "Builds and starts a test server with Purpur $purpurMinecraftVersion."
+		minecraftVersion(purpurMinecraftVersion)
+		runDirectory(layout.projectDirectory.dir("run/purpur-$purpurMinecraftVersion").asFile)
+		serverJar(purpur262Jar)
+		pluginJars(project.tasks.named("shadowJar"))
+		dependsOn(downloadPurpur262, "shadowJar")
+	}
 
 	register("printPaperMinecraftVersion") {
 		doLast {
